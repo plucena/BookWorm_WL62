@@ -1046,7 +1046,10 @@ window.WLJSX.Ajax.Request = WLJSX.Class.create({
 
 		this.options.method = this.options.method.toLowerCase();
 		this.transport = window.WLJSX.Ajax.getTransport();
-		this.transport.timeout = options.timeout || 60 * 1000;
+		if (WL.EnvProfile.isEnabled(WL.EPField.SUPPORT_WL_NATIVE_XHR))
+		{
+			this.transport.timeout = options.timeout || 60 * 1000;
+		}
 		this.request(url);
 	},
 
@@ -6557,6 +6560,7 @@ __WLClient = function() {
 	var __locale;
 	var __pattern;
 	var __androidScreenSize = {};
+	var __androidSDKVersion;
 
 	var initOptions = {
 		onSuccess : function() {},
@@ -6997,6 +7001,11 @@ __WLClient = function() {
 			onFailure : options.onFailure
 		});
 	};
+	
+	
+    this.__getAndroidSDKVersion = function() {
+		return __androidSDKVersion;
+	}
 
 	this.__getFriendlyName = function(options) {
 
@@ -7642,6 +7651,12 @@ __WLClient = function() {
 
 						WL.StaticAppProps.FREE_SPACE = returnedData.freeSpace;
 					}
+					
+                    // set android SDK version                
+                    cordova.exec(function(value){
+            			__androidSDKVersion = value;
+            		}, null, 'WLApp', 'getSDKVersion', [])
+            		
 					// In development mode, the application has a settings
 					// widget in which the user may alter
 					// the application's root url
@@ -15839,7 +15854,8 @@ __WLPush = function() {
 
    
     this.__isDeviceSupportPush = function() {
-        return typeof device.version != undefined && parseFloat(device.version.substr(0, 3)) >= 2.2;
+    	var androidSDKVersion = WL.Client.__getAndroidSDKVersion();
+        return  androidSDKVersion != undefined && parseInt(androidSDKVersion) >= 8;
     };
 
     this.__updateToken = function(serverToken) {
@@ -16593,6 +16609,17 @@ WL.App.hideSplashScreen = function() {
  * ================================================================= 
  */
 
+/**
+ \ * @license
+ * Licensed Materials - Property of IBM
+ * 5725-I43 (C) Copyright IBM Corp. 2006, 2013. All Rights Reserved.
+ * US Government Users Restricted Rights - Use, duplication or
+ * disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+ */
+
+/* Copyright (C) Worklight Ltd. 2006-2012.  All rights reserved. */
+
+
 WL.Trusteer = (function() {
 	var PLUGIN_NAME = "WLTrusteer";
 	var ACTION_GET_RISK_ASSESSMENT = "getRiskAssessment";
@@ -16601,7 +16628,29 @@ WL.Trusteer = (function() {
 		pkg : "Trusteer"
 	});
 	
-	
+	/**
+	 * Get Trusteer risk assessment data 
+	 *
+	 * @param callback
+	 *
+	 * @return Trusteer risk assessment data in JSON format:
+	 * {
+	 *	   ״plat.android.dumpsys":{"value":0,"additionalData":"","lastCalculated":1411295111000,"name":"plat.android.dumpsys"},
+	 *	   "os.ver_up_to_date":{"value":0,"additionalData":"","lastCalculated":1411295111000,"name":"os.ver_up_to_date"},
+	 *	   "device_key":"BEFAFED62456EECC7B5F0E120318EADF85625CD979CF1A9125BF6FF3F7CFB801",
+	 *	   "os.rooted.native":{"value":1000,"additionalData":"","lastCalculated":1411295111000,"name":"os.rooted.native"},
+	 *	   "network.wifi":{"value":0,"additionalData":"status: OFF","lastCalculated":0,"name":"network.wifi"},
+	 *	   "os.rooted.hiders":{"value":0,"additionalData":"","lastCalculated":1411295111000,"name":"os.rooted.hiders"},
+	 *	   "plat.android.apprestrict":{"value":1000,"additionalData":"","lastCalculated":1411295111000,"name":"plat.android.apprestrict"},
+	 *	   "os.rooted":{"value":1000,"additionalData":"","lastCalculated":1411295111000,"name":"os.rooted"},
+	 *	   "total.risk.generic":{"value":600,"additionalData":"","lastCalculated":1411295111000,"name":"total.risk.generic"},
+	 *	   "tas.config_update":{"value":0,"additionalData":"","lastCalculated":1411295111000,"name":"tas.config_update"},
+	 *	   "malware.any":{"value":0,"additionalData":"","lastCalculated":1411295111000,"name":"malware.any"}
+	 *	} 
+	 * <p>
+	 * For more information, see Trusteer SDK documentation.
+	 * @methodOf WL.Trusteer# 
+	 */
 	function getRiskAssessment(callback){
 		if (!WLJSX.Object.isUndefined(cordova) && WLJSX.Object.isFunction(cordova.exec)){
 			cordova.exec(callback, null, PLUGIN_NAME, ACTION_GET_RISK_ASSESSMENT, []);

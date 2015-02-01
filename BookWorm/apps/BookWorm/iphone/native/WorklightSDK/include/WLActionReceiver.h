@@ -20,12 +20,13 @@
  */
 @protocol WLActionReceiver <NSObject>
 
-
 /**
- * Handle received actions
- * Actions will always be delivered on a background thread. If you want to update the application user interface from the received action,
- * you must do so on a main user interface thread, for example by using the performSelectorOnMainThread API.
-*/ 
+ * Any object can receive actions. To do so, it must implement the following protocol. 
+ *
+ * Actions will always be delivered on a background thread. 
+ * If you want to update the application user interface from the received action, you must do so on a main user interface thread, 
+ * for example by using the performSelectorOnMainThread API.
+*/
 -(void)onActionReceived:(NSString *)action withData:(NSDictionary*) data;
 
 @end

@@ -1,14 +1,12 @@
-/.DS_Store
+/book.html
 /css/main.css
 /filelist
 /images/icon.png
 /images/thumbnail.png
 /index.html
 /index.html.old
-/js/.DS_Store
 /js/client.js
 /js/initOptions.js
-/js/jquery/.DS_Store
 /js/jquery/images/ajax-loader.gif
 /js/jquery/images/icons-png/action-black.png
 /js/jquery/images/icons-png/action-white.png
@@ -213,7 +211,7 @@
 /js/jquery/jquery.mobile-1.4.3.css
 /js/jquery/jquery.mobile-1.4.3.js
 /js/jquery/jquery.mobile-1.4.3.min.css
-/js/jquery/jquery.mobile-1.4.3.min.jsf
+/js/jquery/jquery.mobile-1.4.3.min.js
 /js/jquery/jquery.mobile-1.4.3.min.map
 /js/jquery/jquery.mobile.external-png-1.4.3.css
 /js/jquery/jquery.mobile.external-png-1.4.3.min.css
@@ -229,7 +227,6 @@
 /js/jquery/jquery.mobile.theme-1.4.3.min.css
 /js/main.js
 /js/messages.js
-/worklight/checksum.js
 /worklight/cordova.js
 /worklight/cordova_plugins.js
 /worklight/messages/de/messages.json

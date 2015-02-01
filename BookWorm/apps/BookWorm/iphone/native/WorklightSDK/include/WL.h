@@ -76,9 +76,10 @@
 -(void) hideSplashScreen;
 
 /**
- * Sends action to JavaScript action receivers.
- * Note: if there are no JavaScript action receivers registered, the action is queued until a JavaScript action receiver is registered.
- *
+ * Sends action to JavaScript action receivers. 
+ * 
+ * Note: if there are no JavaScript action receivers registered, the action is queued until a JavaScript action receiver is registered. 
+ * 
  * @param action custom string representing an action
 */
 -(void)sendActionToJS:(NSString*)action;
@@ -89,26 +90,30 @@
  * Note: if there are no JavaScript action receivers registered, the action is queued until a JavaScript action receiver is registered.
  * @param action custom string representing an action
  * @param data (optional) custom NSDictionary instance containing key-value pairs
+ * <p>
  * Example:
- * //!
+ * </p>
+ * <pre> <code>
  * [[WL sharedInstance] sendActionToJS:@"doSomething"];
  * NSMutableDictionary *data = [NSDictionary dictionaryWithObject:@"12345" forKey:@"customData"];
  * [[WL sharedInstance] sendActionToJS:@"doSomething" data:data];
- * //!
+ * </code></pre>
 */
 -(void)sendActionToJS:(NSString *)action withData:(NSDictionary*)data;
 
-/**
+ /**
  * Registers a new native action receiver with the Worklight framework.
  *
  * @param actionReceiver object that implements the WLActionReceiver protocol
  * @since IBM Worklight V6.2.0
  *
+ * <p>
  * Example:
- * //!
+ * </p>
+ * <pre> <code>
  * MyReceiver *myReceiver = [MyReceiver new];
  * [[WL sharedInstance] addActionReceiver:myReceiver];
- * //!
+ * </code></pre>
  */
 -(void)addActionReceiver:(id<WLActionReceiver>)wlActionreceiver;
 
@@ -118,11 +123,13 @@
  *
  * @param actionReceiver object that implements the WLActionReceiver protocol
  *
+ * <p>
  * Example:
- * //!
+ * </p>
+ * <pre> <code>
  * MyReceiver *myReceiver = [MyReceiver new];
  * [[WL sharedInstance] removeActionReceiver:myReceiver];
- * //!
+ * </code></pre>
 */
 -(void)removeActionReceiver:(id<WLActionReceiver>)wlActionreceiver;
 
