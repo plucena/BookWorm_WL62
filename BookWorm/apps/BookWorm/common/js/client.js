@@ -15,7 +15,6 @@ $('#loginBtn').click(doLogin) ;
 
 function doLogin() {
 	user = $('#user').val();
-	alert(user);
 	$('#page').load('book.html',function() {
     });
 }
@@ -65,8 +64,9 @@ function favourite(data){
 			    collection:"wish",
 			    other:"",
 			    title:res[1],
-			    user:"plucena@gmail.com"
+			    user:""
 			    };
+	vdata.user = user;
 	
 	$.ajax({
         type: "POST",
@@ -76,7 +76,7 @@ function favourite(data){
         dataType: "json",
         processData: true,
         success: function (vdata, status, jqXHR) {
-            alert("success..." + vdata);
+            alert("book has been added to wishlist");
         },
         error: function (xhr) {
             alert("error" + xhr.responseText);
