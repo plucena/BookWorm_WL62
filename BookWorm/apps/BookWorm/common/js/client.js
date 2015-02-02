@@ -1,16 +1,24 @@
 $( init );
 
+var user;
 
 function init() {
 // Associate Jquery events to buttons
 $('#gbook').click( findBook );
 $('#fav').click( wishList );
 $('#config').click( testAdapter );
-
+$('#loginBtn').click(doLogin) ;
 }
 
 /* Invokes XML Soap Webservice using adapter */
 
+
+function doLogin() {
+	user = $('#user').val();
+	alert(user);
+	$('#page').load('book.html',function() {
+    });
+}
 
 function testAdapter(){
 	console.log("Testing adapter");
@@ -83,7 +91,7 @@ function findBook() {
 }
 
 function wishList(){
-	var gbWS ="http://192.241.171.69:8080/Book/webresources/com.percivallucena.book.book/";
+	var gbWS ="http://192.241.171.69:8080/Book/webresources/com.percivallucena.book.book/"+user;
 	// faz chamda ao WS REST via ajax	
 	  $.ajax({
 		type: 'GET',
