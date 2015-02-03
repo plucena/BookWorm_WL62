@@ -29,18 +29,28 @@ function Logindapter(user, password){
 	var invocationData = {
 			adapter : 'Login',
 			procedure : 'doLogin',
-			parameters : [user, password]
+			parameters : [user, password],
+			compressResponse : true
+
 		};
 	
-	WL.Client.invokeProcedure(invocationData,{
-		onSuccess : showResults,
-		onFailure : adaptererror,
-	});     
+	var ONE_MINUTE = 60 * 1000; 
+	
+	var options = {  timeout : ONE_MINUTE,   
+			  onSuccess :  showResults, 
+			  onFailure : adaptererror,     
+			}; 
+	
+	WL.Client.invokeProcedure(invocationData,options);     
 }
 
 function adaptererror(data){
 	busyInd.hide();
-	alert("Error loading adpater " +  JSON.stringify(data));
+	
+	if(data.errorCode == "REQUEST_TIMEOUT")
+		alert("Can not connect to Worklight server");
+	else
+		alert("Error loading adpater " +  JSON.stringify(data));
 }
 
 
