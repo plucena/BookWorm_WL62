@@ -3,12 +3,13 @@
 $( init );
 
 var user;
+var busyInd = new WL.BusyIndicator ("content", {text: "Please wait..."});
+
 
 function init() {
 // Associate Jquery events to buttons
 $('#gbook').click( findBook );
 $('#fav').click( wishList );
-$('#config').click( testAdapter );
 $('#loginBtn').click(doLogin) ;
 }
 
@@ -17,29 +18,39 @@ $('#loginBtn').click(doLogin) ;
 
 function doLogin() {
 	user = $('#user').val();
-	$('#page').load('book.html',function() {
-    });
+	password= $('#user').val();
+	Logindapter(user, password);
+	busyInd.show();
 }
 
-function testAdapter(){
+function Logindapter(user, password){
 	console.log("Testing adapter");
 	
 	var invocationData = {
 			adapter : 'Login',
-			procedure : 'Login',
-			parameters : ['brother']
+			procedure : 'doLogin',
+			parameters : [user, password]
 		};
 	
 	WL.Client.invokeProcedure(invocationData,{
-		onSuccess : showResults(),
-		onFailure : alert('Error')
-	});
+		onSuccess : showResults,
+		onFailure : adaptererror,
+	});     
+}
+
+function adaptererror(data){
+	busyInd.hide();
+	alert("Error loading adpater " +  JSON.stringify(data));
 }
 
 
+
 function showResults(result){
+	busyInd.hide();
 	console.log("Adapter response");
-	alert(result);
+	alert("Response " + JSON.stringify(result));
+	$('#page').load('book.html',function() {
+    });
 }
 	
 
@@ -69,7 +80,6 @@ function favourite(data){
 			    user:""
 			    };
 	vdata.user = user;
-	alert(vdata.user);
 	
 	$.ajax({
         type: "POST",
@@ -79,7 +89,7 @@ function favourite(data){
         dataType: "json",
         processData: true,
         success: function (vdata, status, jqXHR) {
-            alert("success..." + vdata);
+            alert("book has been added to wishlist");
         },
         error: function (xhr) {
             alert("error" + xhr.responseText);
